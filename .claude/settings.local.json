@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(pkill:*)",
+      "Bash(./start-vdi-platform.sh:*)",
+      "Bash(git add:*)",
+      "Bash(git init:*)"
+    ],
+    "deny": []
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "server_url": "https://vdi-management.company.com",
+  "heartbeat_interval": 60,
+  "enable_remote_commands": true,
+  "max_command_timeout": 300,
+  "log_level": "INFO",
+  "hardware_monitoring": true,
+  "network_monitoring": true,
+  "process_monitoring": true,
+  
+  "security": {
+    "allowed_commands": [
+      "execute_script",
+      "restart_system", 
+      "update_config",
+      "install_package",
+      "update_image",
+      "collect_logs",
+      "restart_service"
+    ],
+    "require_signature": false,
+    "max_script_size": 65536
+  },
+  
+  "monitoring": {
+    "collect_processes": true,
+    "collect_network_stats": true,
+    "collect_disk_stats": true,
+    "collect_hardware_info": true
+  },
+  
+  "logging": {
+    "log_file": "/var/log/vdi/agent.log",
+    "max_log_size": "10MB",
+    "log_rotation": 5
+  }
+}

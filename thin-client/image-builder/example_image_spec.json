@@ -1,0 +1,81 @@
+{
+  "name": "vdi-client",
+  "version": "1.0",
+  "description": "VDI Thin Client Image with RDP optimization",
+  "alpine_version": "3.19",
+  "architecture": "x86_64",
+  
+  "packages": [
+    "firefox-esr",
+    "chromium",
+    "vlc",
+    "libreoffice"
+  ],
+  
+  "drivers": [
+    {
+      "type": "network",
+      "drivers": ["wireless", "ethernet"]
+    },
+    {
+      "type": "graphics", 
+      "drivers": ["intel", "amd"]
+    },
+    {
+      "type": "audio",
+      "drivers": ["alsa", "pulseaudio"]
+    }
+  ],
+  
+  "system_config": {
+    "hostname": "vdi-client",
+    "timezone": "America/New_York",
+    "network": {
+      "wifi": {
+        "ssid": "Corporate-WiFi",
+        "password": "password123",
+        "security": "WPA-PSK"
+      }
+    },
+    "ssh": {
+      "enabled": true,
+      "port": 22,
+      "permit_root": "no",
+      "password_auth": "yes"
+    },
+    "users": {
+      "vdi_user": {
+        "username": "vdi-user",
+        "password": "vdi123"
+      }
+    },
+    "services": ["networkmanager", "chronyd", "sshd", "vdi-agent"]
+  },
+  
+  "vdi_config": {
+    "rdp_server": "rds.company.com",
+    "domain": "COMPANY",
+    "color_depth": 32,
+    "audio_mode": "local",
+    "drive_redirection": true,
+    "clipboard": true
+  },
+  
+  "customizations": {
+    "files": [
+      {
+        "path": "/etc/motd",
+        "content": "Welcome to VDI Thin Client System\nManaged by VDI Platform\n",
+        "mode": 644
+      },
+      {
+        "path": "/etc/vdi/autoconnect.conf",
+        "content": "AUTOCONNECT=true\nSERVER=rds.company.com\nDOMAIN=COMPANY\n",
+        "mode": 600
+      }
+    ],
+    "scripts": [
+      "#!/bin/sh\n# Custom optimization script\necho 'vm.swappiness=10' >> /etc/sysctl.conf\necho 'net.core.rmem_max=16777216' >> /etc/sysctl.conf"
+    ]
+  }
+}
