@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import jwt from 'jsonwebtoken'
+import jwt, { Secret } from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { config } from '../config/config'
 import { logger } from '../utils/logger'
@@ -55,14 +55,18 @@ const mockUsers: User[] = [
 ]
 
 const generateTokens = (userId: string) => {
-  const token = jwt.sign({ userId, type: 'access' }, config.jwt.secret, {
+  const token = jwt.sign({ userId, type: 'access' }, config.jwt.secret as Secret, {
     expiresIn: config.jwt.expiresIn
   })
-  
-  const refreshToken = jwt.sign({ userId, type: 'refresh' }, config.jwt.refreshSecret, {
-    expiresIn: config.jwt.refreshExpiresIn
-  })
-  
+
+  const refreshToken = jwt.sign(
+    { userId, type: 'refresh' },
+    config.jwt.refreshSecret as Secret,
+    {
+      expiresIn: config.jwt.refreshExpiresIn
+    }
+  )
+
   return { token, refreshToken }
 }
 
@@ -184,6 +188,9 @@ class AuthController {
       // This would normally extract user from JWT middleware
       // For now, return mock data
       const user = mockUsers[0]
+      if (!user) {
+        throw createError('User not found', 404, 'USER_NOT_FOUND')
+      }
       const { passwordHash, ...userResponse } = user
 
       res.json({
