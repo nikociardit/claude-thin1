@@ -10,7 +10,6 @@ import json
 import time
 import uuid
 import psutil
-import socket
 import requests
 import subprocess
 import threading
@@ -18,6 +17,9 @@ import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Any
+
+# Ensure log directory exists before configuring logging
+Path('/var/log/vdi').mkdir(parents=True, exist_ok=True)
 
 # Configure logging
 logging.basicConfig(

@@ -3,12 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import {
   Monitor,
   HardDrive,
-  Activity,
-  Users,
   TrendingUp,
-  AlertTriangle,
   CheckCircle,
-  Clock,
   Cpu,
   MemoryStick,
   Wifi,
@@ -208,7 +204,21 @@ export const Dashboard: React.FC = () => {
     refetchInterval: 30000
   })
 
-  const stats = dashboardData?.stats || {}
+  interface DashboardStats {
+    totalDevices: number
+    onlineDevices: number
+    onlinePercentage: number
+    activeImages: number
+    totalDeployments: number
+  }
+
+  const stats: DashboardStats = dashboardData?.stats || {
+    totalDevices: 0,
+    onlineDevices: 0,
+    onlinePercentage: 0,
+    activeImages: 0,
+    totalDeployments: 0
+  }
   const devices = dashboardData?.recentDevices || []
   const metrics = dashboardData?.systemMetrics || {}
 

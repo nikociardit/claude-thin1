@@ -61,7 +61,7 @@ api.interceptors.response.use(
 
     // Handle client errors
     if (error.response.status >= 400 && error.response.status < 500) {
-      const message = error.response.data?.message || 'Request failed'
+      const message = (error.response.data as any)?.message || 'Request failed'
       if (!originalRequest?.url?.includes('/auth/')) {
         toast.error(message)
       }
